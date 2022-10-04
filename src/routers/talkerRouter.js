@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll } = require('./servicesAPI');
+const { getAll, getById } = require('./servicesAPI');
 
 const router = express.Router();
 
@@ -14,5 +14,16 @@ router.get('/', async (req, res) => {
     res.status(500).send({ message: error });
   }
 });
+
+router.get('/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await getById(Number(id));
+      if (result) return res.status(200).json(result);
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    } catch (error) {
+      res.status(500).send({ message: error });
+    }
+  });
 
 module.exports = router;
