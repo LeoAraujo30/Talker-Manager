@@ -26,10 +26,20 @@ const checkPassword = (req, res, next) => {
   }
 };
 
+const randomToken = (num) => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let token = '';
+  for (let i = 1; i <= num; i += 1) {
+    const randomIndex = Math.floor(Math.random() * (62 - 0) + 0); 
+    token += characters[randomIndex];    
+  }
+  return token;
+};
+
 router.post('/', checkEmail, checkPassword, (req, res) => {
   try {
     const result = Object.keys(req.body);
-    if (result.length === 2) return res.status(200).json({ token: '7mqaVRXJSp886CGr' });
+    if (result.length === 2) return res.status(200).json({ token: randomToken(16) });
     return res.status(400).json({ message: 'Objeto deve possuir apenas email e password' });
   } catch (error) {
     res.status(500).send({ message: error });
