@@ -36,10 +36,18 @@ const removeTalker = async (id) => {
   await fs.writeFile(dataBase, JSON.stringify(newResult));
 };
 
+const getByName = async (name) => {
+  const oldResult = JSON.parse(await fs.readFile(dataBase, 'utf-8'));
+  const newResult = oldResult.filter((talker) => talker.name.startsWith(name));
+  if (!name || name.length === 0) return oldResult;
+  return newResult;
+};
+
 module.exports = {
   getAll,
   getById,
   addTalker,
   updateTalker,
   removeTalker,
+  getByName,
 };

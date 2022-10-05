@@ -1,5 +1,6 @@
 const express = require('express');
-const { getAll, getById, addTalker, updateTalker, removeTalker } = require('./servicesAPI');
+const { getAll, getById, addTalker,
+  updateTalker, removeTalker, getByName } = require('./servicesAPI');
 
 const router = express.Router();
 
@@ -74,6 +75,16 @@ router.get('/', async (req, res) => {
     const result = await getAll();
     if (result.length > 0) return res.status(200).json(result);
     return res.status(200).json([]);
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
+});
+
+router.get('/search', checkToken, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const result = await getByName(q);
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).send({ message: error });
   }
