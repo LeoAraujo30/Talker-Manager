@@ -36,11 +36,14 @@ const randomToken = (num) => {
   return token;
 };
 
-router.post('/', checkEmail, checkPassword, (req, res) => {
+router.post('/', checkEmail, checkPassword, async (req, res) => {
   try {
     const result = Object.keys(req.body);
-    if (result.length === 2) return res.status(200).json({ token: randomToken(16) });
-    return res.status(400).json({ message: 'Objeto deve possuir apenas email e password' });
+    if (result.length === 2) {
+      res.status(200).json({ token: randomToken(16) });
+    } else {
+      res.status(400).json({ message: 'Objeto deve possuir apenas email e password' });
+    }
   } catch (error) {
     res.status(500).send({ message: error });
   }
